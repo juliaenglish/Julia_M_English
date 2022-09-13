@@ -52,8 +52,26 @@ afro_bar_tab_imm <- table(afrobar$neighbors_immigrants, useNA = 'always')
 #### Step 8: create a cross tabulation ####
 # create a table and save it in your working environment. Turn it into a proportional table
 
+my_prop_tab <- table(afrobar$educ, afrobar$neighbors_religon) %>% prop.table(margin = 1) %>% round(digits = 2)
+
+my_prop_tab
+
 #### Step 9: create a visualization ####
 # convert the table to a dataframe and use ggplot with geom_col to plot it. The useful code files has some examples
 
+tabledataframe <- afrobar %>% select(educ, neighbors_religon) %>% table() %>% data.frame()
+
+my_beautiful_bar_graph <- tabledataframe %>% ggplot(mapping = 
+                            aes(x = educ, y = Freq, fill = neighbors_religon)) +
+  geom_col(position = 'dodge')
+
+my_beautiful_bar_graph
+
 #### Step 10: conduct a null-hypothesis test ####
 # test the null-hypothesis. Use the table you made in step 8
+religiontable <- afrobar %>% select(educ, neighbors_religon) %>% table()
+
+test <- chisq.test(religiontable)
+
+test
+#(\chi^2(df = 1) = 107.94, p < .001) We reject the null hypothesis that education levels and attitudes toward neighbors of a different religion are independent. 
