@@ -1,0 +1,60 @@
+---
+title: "S040 Unit 1 Quiz"
+author: "Julia English"
+date: "2022-09-12"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loading libraries and data}
+rm(list = ls())
+library(foreign)
+library(dplyr)
+library(ggplot2)
+
+library(foreign)
+setwd("C:/Data Files")
+wvs <- read.dta('C:/Data Files/wvs_class (1).dta')
+
+
+my_tab_haiti <- wvs %>% filter(country == "Haiti") %>% select(justifiable_abortion_simple, believe_in_god) %>%
+  table()
+
+my_tab_haiti
+
+my_tab_haiti_prop <- my_tab_haiti %>% prop.table(margin = 2) %>% round(digit = 2)
+
+my_tab_haiti_prop
+
+test_haiti <- chisq.test(my_tab_haiti)
+
+test_haiti
+
+
+
+ 
+
+```
+/chi^2(df = 1) = 0.0164, p = 0.8981
+ The null hypothesis would be that there is no association between believing in god and finding abortion justifiable in the Haitian population. We cannot reject the null hypothesis because the probability of reaching this observed value is not small enough compared to the sampling distribution of the test statistic under the null hypothesis. There is not enough evidence to support a relationship between a belief in god and believing that abortion is justifiable in the Haitian population.
+ 
+```{r japan}
+my_tab_japan <- wvs %>% filter(country == "Japan") %>% select(justifiable_abortion_simple, believe_in_god) %>%
+  table()
+
+my_tab_japan
+
+my_tab_japan_prop <- my_tab_japan %>% prop.table(margin = 2) %>% round(digit = 2)
+
+my_tab_japan_prop
+
+test_japan <- chisq.test(my_tab_japan)
+
+test_japan
+```
+ 
+/chi^2(df = 1) = 1.1336, p = 0.287
+The null hypothesis would be that there is no association between believing in god and finding abortion justifiable in the Japanese population. We cannot reject the null hypothesis because the probability of reaching this observed value is not small enough compared to the sampling distribution of the test statistic under the null hypothesis. There is not enough evidence to support a relationship between a belief in god and believing that abortion is justifiable in the Japanese population..
