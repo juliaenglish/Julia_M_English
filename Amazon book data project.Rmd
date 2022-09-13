@@ -1,0 +1,19 @@
+---
+title: "Book Data"
+author: "Julia English"
+date: "2022-09-13"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+```
+
+
+```{r reading in data}
+books <- read.csv('Amazon Top 50 Books 2009-2021 - Reworked Sheet (1).csv')
+```
+
