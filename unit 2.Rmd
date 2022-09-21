@@ -1,0 +1,69 @@
+---
+title: "unit 2"
+author: "Julia English"
+date: "2022-09-20"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r reading in data}
+library(foreign)
+library(tidyverse)
+library(ggplot2)
+madese <- read.dta('madese.dta')
+```
+
+```{r histogram plots}
+
+w_plot <- madese %>%
+  select(stud_white_pct) %>%
+  ggplot(mapping = aes(x = stud_white_pct)) +
+  geom_histogram()
+
+w_plot
+```
+This is bimodal data. 
+
+```{r}
+tw_plot <- madese %>%
+  select(teach_white_pct) %>%
+  ggplot(mapping = aes(x = teach_white_pct)) +
+  geom_histogram()
+
+tw_plot
+```
+This data is unimodal and skewed to the left. 
+
+```{r}
+
+tw_summary <- madese %>%
+  select(teach_white_pct) %>%
+  summary()
+
+tw_summary %>% knitr::kable()
+
+w_summary <- madese %>%
+  select(stud_white_pct) %>%
+  summary()
+
+w_summary %>% knitr::kable()
+```
+For the student variable, the median proportion is much smaller than the teacher variable. The student variable also has a greater overall spread. The IQR for teachers is less than 10 percentage points. 
+
+```{r null hypothesis}
+
+madese_small <- madese %>%
+  filter(type %in% c("Charter", "District")) %>%
+  group_by(type) %>%
+  summarize(percent_w = mean(stud_white_pct, na.rm = TRUE))
+
+knitr::kable(madese_small, digits = 3, col.names = c("School Type", "Percent of White Students"))
+```
+
+```{r}
+
+```
+
