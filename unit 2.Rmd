@@ -54,7 +54,7 @@ w_summary %>% knitr::kable()
 For the student variable, the median proportion is much smaller than the teacher variable. The student variable also has a greater overall spread. The IQR for teachers is less than 10 percentage points. 
 
 ```{r null hypothesis}
-
+unique(madese$type)
 madese_small <- madese %>%
   filter(type %in% c("Charter", "District")) %>%
   group_by(type) %>%
@@ -64,6 +64,18 @@ knitr::kable(madese_small, digits = 3, col.names = c("School Type", "Percent of 
 ```
 
 ```{r}
+madese_scatter <- madese %>%
+  ggplot(mapping = aes(x = stud_white_pct, y = teach_white_pct)) +
+  geom_point(mapping = aes(fill = type)) +
+  scale_color_manual(values = c("lightblue", "pink", "violet", "seagreen")) +
+  labs(title = "Percentage White Teachers and Students", x = "Percentage White Students", y = "Percentage White Teachers")
+
+madese_scatter
+```
+
+According to the data we have a positive exponential direction with most values toward high white teacher and student populations. 
+
+```{r correlation tests}
 
 ```
 
