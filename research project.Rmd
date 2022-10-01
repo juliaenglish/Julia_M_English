@@ -22,39 +22,37 @@ wvs <- read.dta('wvs_class.dta')
 
 ```{r}
 unique(wvs$health)
-unique(wvs$important_politics)
 wvs_us <- wvs %>%
   filter(country == "United States") %>%
   select(health, important_politics)
 
 wvs_us <- wvs_us %>%
-  mutate(health_simp = if_else(health %in% c("Very good", "Good", "Fair"), 1, 0))
+  mutate(health_simp = if_else(health %in% c("Very good", "Good", "Fair"), "Healthy", "Not healthy"))
 
 wvs_us <- wvs_us %>% 
-  mutate(pol_simp = if_else(important_politics %in% c("Very important", "Rather important"), 1, 0))
+  mutate(pol_simp = if_else(important_politics %in% c("Very important", "Rather important"), "Important", "Not Important"))
 
 health_prop_table <- wvs_us %>% 
   select(health_simp) %>%
   table() %>%
   prop.table()
          
-knitr::kable(health_prop_table, digits = 3)
+knitr::kable(health_prop_table, digits = 3, col.names = c("Health", "Frequency"))
 
 pol_prop_table <- wvs_us %>%
   select(pol_simp) %>%
   table() %>%
   prop.table()
 
-knitr::kable(pol_prop_table, digits = 3)
+knitr::kable(pol_prop_table, digits = 3, col.names = c("Political Importance", "Frequency"))
 
   
 ```
 
 ```{r univariate bar graphs}
 pol_bar <- wvs_us %>%
-  mutate(pol_simp_2 = if_else(pol_simp == 1, "Politically Involved", "Politically Uninvolved")) %>%
   group_by(pol_simp) %>%
-  ggplot(mapping = aes(x = pol_simp_2)) +
+  ggplot(mapping = aes(x = pol_simp)) +
   geom_bar(fill = "dodgerblue", color = "black") +
   theme_dark() +
   labs(title = "Political Sentiments of Americans", x = "Political Importance", y = "Count")
@@ -62,9 +60,8 @@ pol_bar <- wvs_us %>%
 pol_bar
 
 health_bar <- wvs_us %>%
-  mutate(health_simp_2 = if_else(health_simp == 1, "Healthy", "Unhealthy")) %>%
   group_by(health_simp) %>%
-  ggplot(mapping = aes(x = health_simp_2)) +
+  ggplot(mapping = aes(x = health_simp)) +
   geom_bar(fill = "darkseagreen1", color = "black") +
   theme_dark() +
   labs(title = "Health Sentiments of Americans", x = "Overall Health", y = "Count")
